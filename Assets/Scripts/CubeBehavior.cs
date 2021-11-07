@@ -10,8 +10,8 @@ public class CubeBehavior : MonoBehaviour
     private Rigidbody cRigidBody;
     private Transform transformer;
     private Terrain terrain;
-    private float speed;
-    
+    [SerializeField] float speed = 3;
+
     void Start()
     {
         cRigidBody = GetComponent<Rigidbody>();
@@ -19,26 +19,27 @@ public class CubeBehavior : MonoBehaviour
         Debug.Log("Hello World!");
         //transformer.Translate(Vector3.forward);
         //transformer.SetPositionAndRotation(new Vector3(0, 10, 0), Quaternion.identity);
-        speed = 25;
     }
 
     // Update is called once per frame
-    void Update()
+    private void FixedUpdate()
     {
+        
         if (Input.GetKey(KeyCode.W))
         {
-            cRigidBody.velocity = transform.forward * speed;
+            cRigidBody.AddForce(new Vector3(speed, 0, 0));
         }
 
-        if (Input.GetKey((KeyCode.S)))
+        if (Input.GetKey(KeyCode.S))
         {
-            cRigidBody.velocity = -transform.forward * speed;
+            cRigidBody.AddForce((new Vector3(-speed, 0, 0)));
         }
 
         if (Input.GetKey(KeyCode.A))
         {
             transformer.Rotate(new Vector3(0, 1, 0) * Time.deltaTime * speed, Space.World);
         }
+
         if (Input.GetKey(KeyCode.D))
         {
             transformer.Rotate(new Vector3(0, -1, 0) * Time.deltaTime * speed, Space.World);
@@ -46,20 +47,13 @@ public class CubeBehavior : MonoBehaviour
 
         if (Input.GetKey(KeyCode.Q))
         {
-            cRigidBody.velocity = transform.up * speed;
+            cRigidBody.AddForce((new Vector3(0, speed, 0)));
         }
+        
         if (Input.GetKey(KeyCode.E))
         {
-            cRigidBody.velocity = -transform.up * speed;
+            cRigidBody.AddForce((new Vector3(0, -speed, 0)));
         }
-
-        float yDistance = Math.Abs(Terrain.activeTerrain.transform.position.y - transform.position.y);
-        Debug.Log(yDistance);
-        if (yDistance < 100)
-        {
-            // robot is kill :(
-            Destroy(this);
-        }
-        //if ()
+        
     }
 }
